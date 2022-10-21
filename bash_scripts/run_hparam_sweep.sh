@@ -10,7 +10,7 @@
 source venv/bin/activate
 
 name=$(basename $1)
-output_dir=$2
+output_dir=$2  # directory where model outputs will be saved
 
 mkdir -p output_dir
 
@@ -19,12 +19,12 @@ mkdir -p "${output_dir}/$name"
 
 # xargs -P 4 means run 4 processes in parallel (to saturate the GPU)
 sh -c 'for t in 0.{00..90..2}; do for y in 0.{00..90..2}; do echo $t $y; done; done;' | \
-xargs -n 1 -P 4 -L1 bash -c 'python predict.py --model_name_or_path "'$1'" --input_file dev_data/out_uncorr.dev.txt --output_file "'${output_dir}'/'$name'/${0}_${1}.txt" --additional_confidence $0 --min_error_probability $1'
+xargs -n 1 -P 4 -L1 bash -c 'python predict.py --model_name_or_path "'$1'" --input_file data_downloads/wi+locness/out_uncorr.dev.txt --output_file "'${output_dir}'/'$name'/${0}_${1}.txt" --additional_confidence $0 --min_error_probability $1'
 
 # run 32 errant processes in parallel because we have 32 CPU cores
 # the syntax ${0%.*} removes the ".txt" extension from the filename variable, $0
-ls ${output_dir}/$name/*.txt | xargs -n 1 -P 32 -L1 bash -c 'errant_parallel -orig dev_data/out_uncorr.dev.txt -cor "$0" -out "${0%.*}.m2"'
-ls ${output_dir}/$name/*.m2 | xargs -n 1 -P 32 -L1 bash -c 'errant_compare -hyp "$0" -ref dev_data/errant.m2 >> "${0%.*}.errant"'
+ls ${output_dir}/$name/*.txt | xargs -n 1 -P 32 -L1 bash -c 'errant_parallel -orig data_downloads/wi+locness/out_uncorr.dev.txt -cor "$0" -out "${0%.*}.m2"'
+ls ${output_dir}/$name/*.m2 | xargs -n 1 -P 32 -L1 bash -c 'errant_compare -hyp "$0" -ref dev_gold.m2 >> "${0%.*}.errant"'
 
 python utils/errant_output_combiner.py --input_files ${output_dir}/$name/*.errant --output_file ${output_dir}/$name/summary.csv
 python utils/hparam_csv_analysis.py --input_file ${output_dir}/$name/summary.csv --n_seeds 1 --copy_output_files True --create_json_files True

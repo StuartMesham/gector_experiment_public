@@ -2,7 +2,7 @@
 
 # customise the variables below
 
-input_file=test_data/ABCN.test.bea19.orig
+input_file=data_downloads/wi+locness/test/ABCN.test.bea19.orig
 output_dir=ensemble_outputs
 
 e1=deberta-large

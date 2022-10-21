@@ -10,6 +10,6 @@ for stage in 1 2 3
 do
   for split in train dev
     do
-    python $1 --input_file ${2}/stage_$stage/$split.${4} --output_file ${2}/stage_$stage/$split.${4}
+    python $1 --input_file ${2}/stage_$stage/$split.${3} --output_file ${2}/stage_$stage/$split.${4}
   done
 done

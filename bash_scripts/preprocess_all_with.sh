@@ -7,7 +7,7 @@
 #1 preprocess script e.g. utils/preprocess_data.py
 #2 output dir
 
-in_dir=unprocessed
+in_dir=datasets/unprocessed
 out_dir=$2
 
 print_and_run () {

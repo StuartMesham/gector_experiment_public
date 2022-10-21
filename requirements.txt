@@ -1,4 +1,4 @@
-torch
+torch==1.11.0
 transformers==4.21.1
 datasets==2.3.2
 scikit-learn==1.1.1
@@ -9,4 +9,5 @@ spacy==2.2.4
 lemminflect==0.2.2
 python-Levenshtein==0.12.1
 sentencepiece==0.1.97
-matplotlib
+matplotlib==3.6.0
+gdown==4.5.3
