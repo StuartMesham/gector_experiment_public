@@ -1,0 +1,12 @@
+torch
+transformers==4.21.1
+datasets==2.3.2
+scikit-learn==1.1.1
+wandb==0.12.20
+symspellpy==6.7.6
+errant==2.3.3
+spacy==2.2.4
+lemminflect==0.2.2
+python-Levenshtein==0.12.1
+sentencepiece==0.1.97
+matplotlib
