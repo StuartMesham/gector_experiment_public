@@ -33,9 +33,9 @@ fi
 for run in 1 2 3 4 5 6
 do
   seed=${seeds[$run]}
-  python slurm_job_generator.py --model_out model_saves/${model_name}_basetags_${tagset_size}_${run} --wandb_project basetags_${tagset_size} --tagset_file tagsets/base/${tagset_size_literal}-labels.txt --data_dir datasets/preprocessed --seed $seed --base_model $model --model_outputs_dir model_dev_outputs
-  python slurm_job_generator.py --model_out model_saves/${model_name}_spell_${tagset_size}_${run} --wandb_project spell_${tagset_size} --tagset_file tagsets/spell/${tagset_size_literal}-labels.txt --data_dir datasets/preprocessed --data_extension spell --seed $seed --base_model $model --model_outputs_dir model_dev_outputs
-  python slurm_job_generator.py --model_out model_saves/${model_name}_lemon_${tagset_size}_${run} --wandb_project lemon_${tagset_size} --tagset_file tagsets/lemon/${tagset_size_literal}-labels.txt --data_dir datasets/preprocessed_fewer_transforms --data_extension lemon --seed $seed --base_model $model --model_outputs_dir model_dev_outputs
-  python slurm_job_generator.py --model_out model_saves/${model_name}_lemon-spell_${tagset_size}_${run} --wandb_project lemon-spell_${tagset_size} --tagset_file tagsets/lemon_spell/${tagset_size_literal}-labels.txt --data_dir datasets/preprocessed_fewer_transforms --data_extension lemon.spell --seed $seed --base_model $model --model_outputs_dir model_dev_outputs
+  python utils/slurm_job_generator.py --model_out model_saves/${model_name}_basetags_${tagset_size}_${run} --wandb_project basetags_${tagset_size} --tagset_file tagsets/base/${tagset_size_literal}-labels.txt --data_dir datasets/preprocessed --seed $seed --base_model $model --model_outputs_dir model_dev_outputs
+  python utils/slurm_job_generator.py --model_out model_saves/${model_name}_spell_${tagset_size}_${run} --wandb_project spell_${tagset_size} --tagset_file tagsets/spell/${tagset_size_literal}-labels.txt --data_dir datasets/preprocessed --data_extension spell --seed $seed --base_model $model --model_outputs_dir model_dev_outputs
+  python utils/slurm_job_generator.py --model_out model_saves/${model_name}_lemon_${tagset_size}_${run} --wandb_project lemon_${tagset_size} --tagset_file tagsets/lemon/${tagset_size_literal}-labels.txt --data_dir datasets/preprocessed_fewer_transforms --data_extension lemon --seed $seed --base_model $model --model_outputs_dir model_dev_outputs
+  python utils/slurm_job_generator.py --model_out model_saves/${model_name}_lemon-spell_${tagset_size}_${run} --wandb_project lemon-spell_${tagset_size} --tagset_file tagsets/lemon_spell/${tagset_size_literal}-labels.txt --data_dir datasets/preprocessed_fewer_transforms --data_extension lemon.spell --seed $seed --base_model $model --model_outputs_dir model_dev_outputs
 done
 

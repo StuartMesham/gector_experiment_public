@@ -32,6 +32,7 @@ assert args.do_synthetic_pretrain in ['True', 'False']
 args.do_synthetic_pretrain = args.do_synthetic_pretrain == 'True'
 
 venv = 'venv'
+partition = '<CLUSTER PARTITION>'
 account = '<SLURM ACCOUNT>'
 port = random.randint(12000, 13000)
 
@@ -75,7 +76,6 @@ wandb_run_id_p3 = ''.join(random.choices(string.ascii_lowercase + string.digits,
 
 p1_values = {
     'BASE_MODEL': args.base_model,
-    'SPELLING_DICT': args.spelling_dict,
     'TAGSET_FILE': args.tagset_file,
     'OUTPUT_DIR': f'{args.model_out}_p1',
     'BATCH_SIZE': 256//(args.p1_nodes * args.p1_gpus),
@@ -94,7 +94,7 @@ p1_values = {
     'SLURM_OUTPUT_FILE': args.slurm_out,
     'SLURM_ERROR_FILE': args.slurm_err,
     'ACCOUNT': account,
-    'PARTITION': args.p,
+    'PARTITION': partition,
     'MASTER_PORT': port,
 }
 
@@ -116,7 +116,7 @@ p2_values.update({
     'SLURM_OUTPUT_FILE': args.slurm_out,
     'SLURM_ERROR_FILE': args.slurm_err,
     'ACCOUNT': account,
-    'PARTITION': args.p,
+    'PARTITION': partition,
     'MASTER_PORT': port,
 })
 
@@ -137,7 +137,7 @@ p3_values.update({
     'SLURM_OUTPUT_FILE': args.slurm_out,
     'SLURM_ERROR_FILE': args.slurm_err,
     'ACCOUNT': account,
-    'PARTITION': args.p,
+    'PARTITION': partition,
     'MASTER_PORT': port,
 })
 
