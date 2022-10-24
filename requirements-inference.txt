@@ -1,0 +1,7 @@
+torch==1.11.0
+transformers==4.21.1
+datasets==2.3.2
+symspellpy==6.7.6
+spacy==2.2.4
+lemminflect==0.2.2
+sentencepiece==0.1.97

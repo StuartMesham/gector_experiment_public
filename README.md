@@ -3,6 +3,21 @@
 Throughout our codebase we use the terms "spell" and "lemon".
 They refer to spelling and lemminflect-related things respectively.
 
+## Quick Start
+
+For users only interested in running inference with our trained models. First download the following required files,
+
+```bash
+wget https://raw.githubusercontent.com/wolfgarbe/SymSpell/master/SymSpell/frequency_dictionary_en_82_765.txt
+mkdir -p data
+wget https://github.com/grammarly/gector/raw/master/data/verb-form-vocab.txt -P data
+```
+
+Then follow [the installation instructions](#installation), and [inference instructions](#run-inference).
+For a minimal installation (which is compatible with Google Colab's Python 3.7) use the `requirements-inference.txt` requirements file.
+Ensure the [project root directory is in your PYTHONPATH variable](#export-pythonpath).
+All other sections can be skipped.
+
 ## Some external file sources
 `utils/corr_from_m2.py` was downloaded from [this link](https://www.cl.cam.ac.uk/research/nl/bea2019st/data/corr_from_m2.py)
 
@@ -40,12 +55,16 @@ python -m spacy download en
 For reference, we have included the `long-requirements.txt` file which has the versions of all python packages installed on our server when running our experiments.
 
 ## Export PYTHONPATH
-Do this at the start of each terminal session
+Do this at the start of each terminal session:
 ```bash
 export PYTHONPATH="${PYTHONPATH}:`pwd`"
 ```
 
-## Data downloading and initial splitting
+## File downloading and dataset splitting
+
+The script below downloads the `data/verb-form-vocab.txt` and `frequency_dictionary_en_82_765.txt` files which are **required for both training and inference**.
+It also downloads the datasets used to train and evaluate the model.
+
 Note that the datasets used are not all publicly available without requesting permission from the owners first.
 In `bash_scripts/download_and_combine_data.sh` the command for downloading NUCLE has been removed.
 Please request the dataset from the owners and add your own download command to the script.
