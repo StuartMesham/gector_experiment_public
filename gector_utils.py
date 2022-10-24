@@ -85,6 +85,7 @@ def load_sym_spell(frequency_dictionary, max_edit_distance=2):
     if os.path.isfile(pickle_file):
         sym_spell.load_pickle(pickle_file)
     else:
+        assert os.path.isfile(frequency_dictionary), f'{frequency_dictionary} not found'
         sym_spell.load_dictionary(frequency_dictionary, 0, 1)
         sym_spell.save_pickle(pickle_file)
     return sym_spell
