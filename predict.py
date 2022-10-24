@@ -10,6 +10,8 @@ from transformers import AutoConfig, HfArgumentParser, AutoTokenizer
 from gector import GectorForTokenClassification
 from helpers_new import get_target_sent_by_edits, START_TOKEN, UNK, PAD, normalize
 from gector_utils import gector_tokenize
+from utils.inference_tweak_param_json_utils import get_inf_tweaks_dict
+from transformers.utils import EntryNotFoundError
 
 USE_CUDA = torch.cuda.is_available()
 if USE_CUDA:
@@ -319,28 +321,6 @@ def main():
     else:
         model_args, data_args, gector_args = parser.parse_args_into_dataclasses()
 
-    assert os.path.isdir(model_args.model_name_or_path), f'no such directory: {model_args.model_name_or_path}'
-
-    json_file_path = os.path.join(model_args.model_name_or_path, 'inference_tweak_params.json')
-    has_hparam_json_file = os.path.isfile(json_file_path)
-
-    if has_hparam_json_file:
-        with open(json_file_path, 'r') as f:
-            d = json.load(f)
-
-        if gector_args.min_error_probability is not None:
-            print('warning: model save has inference_tweak_params.json, but min_error_probability was also provided. Ignoring value in model save.')
-        else:
-            gector_args.min_error_probability = d['min_error_probability']
-
-        if gector_args.additional_confidence is not None:
-            print('warning: model save has inference_tweak_params.json, but additional_confidence was also provided. Ignoring value in model save.')
-        else:
-            gector_args.additional_confidence = d['additional_confidence']
-
-    assert gector_args.min_error_probability is not None, 'please supply --min_error_probability argument'
-    assert gector_args.additional_confidence is not None, 'please supply --additional_confidence argument'
-
     config = AutoConfig.from_pretrained(
         model_args.config_name if model_args.config_name else model_args.model_name_or_path,
         cache_dir=model_args.cache_dir,
@@ -368,6 +348,25 @@ def main():
         revision=model_args.model_revision,
         use_auth_token=True if model_args.use_auth_token else None,
     )
+
+    try:
+        d = get_inf_tweaks_dict(model_args.model_name_or_path)
+
+        if gector_args.min_error_probability is not None:
+            print('warning: model save has inference_tweak_params.json, but min_error_probability was also provided. Ignoring value in model save.')
+        else:
+            gector_args.min_error_probability = d['min_error_probability']
+
+        if gector_args.additional_confidence is not None:
+            print('warning: model save has inference_tweak_params.json, but additional_confidence was also provided. Ignoring value in model save.')
+        else:
+            gector_args.additional_confidence = d['additional_confidence']
+
+    except EntryNotFoundError:  # json file not found in model save dir
+        pass
+
+    assert gector_args.min_error_probability is not None, 'please supply --min_error_probability argument'
+    assert gector_args.additional_confidence is not None, 'please supply --additional_confidence argument'
 
     if not USE_CUDA:
         print('warning: CUDA not available, using CPU')
