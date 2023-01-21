@@ -6,7 +6,6 @@ import argparse
 
 parser = argparse.ArgumentParser(description='Calculate averages over multiple runs')
 parser.add_argument('--input_file', type=str, required=True)
-parser.add_argument('--visualise', type=bool, default=False, required=False)
 parser.add_argument('--copy_output_files', type=bool, default=False, required=False)
 parser.add_argument('--create_json_files', type=bool, default=False, required=False)
 parser.add_argument('--model_saves_dir', type=str, default='model_saves', required=False)
@@ -30,25 +29,6 @@ df3['name'] = df3['model'].apply(lambda x: x[:-5])
 df3 = df3.join(df3['model'].str.extract(r'.*/(?P<encoder>[\-a-z0-9]+)_(?P<tagset>[\-a-z]+)_(?P<tagset_size>[\-a-z0-9]+)_(?P<seed>.).*'))
 
 assert (df3.groupby('name', sort=False).count() == args.n_seeds).all(axis=None), f"some of them don't have {args.n_seeds} runs"
-
-if args.visualise:
-    temp2 = df3[['encoder', 'tagset_size', 'tagset', 'F0.5']]
-    temp2 = temp2.groupby(['encoder', 'tagset_size', 'tagset'], as_index=False).mean()
-    temp2['encoder_tagset_size'] = temp2['encoder'] + '_' + temp2['tagset_size']
-    temp2 = temp2.pivot_table(index=['encoder_tagset_size'], columns=['tagset'], values='F0.5')
-    temp2 = temp2[['basetags', 'spell', 'lemon', 'lemon-spell']]
-
-    temp2.rename(columns={'spell': '$SPELL', 'lemon': '$INFLECT', 'lemon-spell': '\$SPELL + \$INFLECT'}, inplace=True)
-
-    from matplotlib import pyplot as plt
-    ax = temp2.plot.bar(rot=45, figsize=(8, 5))
-    plt.xticks(ha='right', rotation_mode='anchor')
-    plt.ylim([0.555, 0.635])
-    ax.axes.get_xaxis().get_label().set_visible(False)
-    plt.ylabel('F0.5')
-    plt.title(f'BEA-2019 dev scores (mean over {args.n_seeds} seeds)')
-    plt.tight_layout()
-    plt.show()
 
 if args.copy_output_files:
     df3['output_file'] = df3['file'].apply(lambda x: x[:-6] + 'txt')

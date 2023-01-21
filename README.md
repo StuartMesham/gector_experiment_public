@@ -52,7 +52,7 @@ pip install -r requirements.txt
 python -m spacy download en
 ```
 
-For reference, we have included the `long-requirements.txt` file which has the versions of all python packages installed on our server when running our experiments.
+For reference, we have included the `requirements-long.txt` file which has the versions of all python packages installed on our server when running our experiments.
 
 ## Export PYTHONPATH
 Do this at the start of each terminal session:
@@ -227,6 +227,15 @@ python run_gector.py \
 
 In our experiments the 6 seeds we used are 42, 52, 62, 72, 82 and 92 (reported as "seeds 1-6" in this order)
 
+We used the following pre-trained encoders:
+```
+microsoft/deberta-large
+microsoft/deberta-v3-large
+google/electra-large-discriminator
+roberta-large
+xlnet-large-cased
+```
+
 In our experiments we sometimes ran into an issue where the system loaded the wrong dataset from the huggingface cache.
 We were not able to find the root cause of this and therefore do not know whether the problem was specific to our server's setup.
 We therefore recommend using separate huggingface home directories for each experiment.
@@ -253,6 +262,8 @@ Our pipeline (shown below) uses a SLURM job script (`bash_scripts/run_hparam_swe
 It performs a grid search over the two hyperparameters on the BEA-2019 dev set.
 Note that it requires the `dev_gold.m2` file to exist (see the "Run ERRANT evaluation" section of this README).
 
+For interested readers, we have made the results from our grid search available for download (LINK REMOVED FOR BLIND REVIEW).
+
 ## Run Ensembling
 
 The `ensemble.py` script is documented [here](https://github.com/MaksTarnavskyi/gector-large).
@@ -269,6 +280,24 @@ errant_parallel -orig data_downloads/wi+locness/out_uncorr.dev.txt -cor model_de
 errant_parallel -orig data_downloads/wi+locness/out_uncorr.dev.txt -cor data_downloads/wi+locness/out_corr.dev.txt -out dev_gold.m2
 errant_compare -hyp model_dev_prediction.m2 -ref dev_gold.m2
 ```
+
+## Run MaxMatch evaluation
+
+For licensing reasons, the MaxMatch scorer could not be included in this repository, and must be downloaded separately.
+Here are example commands you could use to download and extract it:
+```bash
+wget https://www.comp.nus.edu.sg/~nlp/sw/m2scorer.tar.gz
+tar -xzf m2scorer.tar.gz
+rm m2scorer.tar.gz
+```
+
+Here is an example evaluating the model saved in `model_save_dir` on the CoNLL-2014 test set:
+```bash
+python predict.py --model_name_or_path <model_save_dir> --input_file data_downloads/conll14st-test-data/out_uncorr.test.txt --output_file model_conll_test_prediction.txt
+python2 m2scorer/scripts/m2scorer.py model_conll_test_prediction.txt test_data/conll14st-test-data/noalt/official-2014.combined.m2
+```
+
+Note that `python2` should point to a Python 2.7 interpreter.
 
 ## Model saves
 

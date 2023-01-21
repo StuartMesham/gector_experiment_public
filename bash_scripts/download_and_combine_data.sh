@@ -38,6 +38,11 @@ mkdir -p lang8
 tar -xzf lang8.bea19.tar.gz --directory lang8
 rm lang8.bea19.tar.gz
 
+# CoNLL-2014 Test Set
+wget https://www.comp.nus.edu.sg/~nlp/conll14st/conll14st-test-data.tar.gz
+tar -xzf conll14st-test-data.tar.gz
+rm conll14st-test-data.tar.gz
+
 cd ..
 
 python utils/test_train_split.py --f1 data_downloads/synthetic/a1/a1_train_incorr_sentences.txt --f2 data_downloads/synthetic/a1/a1_train_corr_sentences.txt
@@ -93,3 +98,6 @@ cp data_downloads/wi+locness/out_uncorr.train.txt datasets/unprocessed/stage_3/o
 cp data_downloads/wi+locness/out_corr.train.txt datasets/unprocessed/stage_3/out_corr.train.txt
 cp data_downloads/wi+locness/out_uncorr.dev.txt datasets/unprocessed/stage_3/out_uncorr.dev.txt
 cp data_downloads/wi+locness/out_corr.dev.txt datasets/unprocessed/stage_3/out_corr.dev.txt
+
+# CoNLL-2014 Test Set
+python utils/uncorr_from_m2.py -out data_downloads/conll14st-test-data/out_uncorr.test.txt data_downloads/conll14st-test-data/noalt/official-2014.combined.m2
