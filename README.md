@@ -31,7 +31,7 @@ Note for macOS users, some dependencies are not compatible with the python inter
 Please use a version installed with [pyenv](https://github.com/pyenv/pyenv), [Homebrew](https://brew.sh) or downloaded from [the official Python website](https://www.python.org).
 This repo was tested on python 3.8.13 installed with pyenv.
 
-Local install command:
+Local & Colab install command:
 ```bash
 pip install wheel
 pip install -r requirements.txt
@@ -247,28 +247,34 @@ Here is an example using our inference script.
 The inference tweak parameter arguments, `--additional_confidence` and `--min_error_probability` can be omitted if `model_save_dir` contains an `inference_tweak_params.json` file.
 
 ```bash
-python predict.py --model_name_or_path <model_save_dir> --input_file <input.txt> --output_file <output.txt>
+python predict.py --model_name_or_path stuartmesham/deberta-large_lemon-spell_5k_4_p3 --input_file <input.txt> --output_file <output.txt>
 ```
 
-The command above expects `model_save_dir` to contain a file named `inference_tweak_params.json` containing json in the following format:
+The above command will download one of our pretrained models from the huggingface hub and run inference with it.
+
+If `--additional_confidence` and `--min_error_probability` are not supplied (as in this example), then the command above expects `model_save_dir` to contain a file named `inference_tweak_params.json` containing json in the following format:
 ```json
 {"min_error_probability": 0.64, "additional_confidence": 0.36}
 ```
 
-You need to manually create this file after training with `run_gector.py`.
+If you want to train and run inference with your own model, you will need to manually create this file after training.
 If you do not have an `inference_tweak_params.json` file, you can manually supply the `--additional_confidence` and `--min_error_probability` arguments to the `predict.py` script.
 
 Our pipeline (shown below) uses a SLURM job script (`bash_scripts/run_hparam_sweep.sh`) to create `inference_tweak_params.json` files.
 It performs a grid search over the two hyperparameters on the BEA-2019 dev set.
 Note that it requires the `dev_gold.m2` file to exist (see the "Run ERRANT evaluation" section of this README).
 
-For interested readers, we have made the results from our grid search available for download (LINK REMOVED FOR BLIND REVIEW).
-
 ## Run Ensembling
 
 The `ensemble.py` script is documented [here](https://github.com/MaksTarnavskyi/gector-large).
 
-We include `bash_scripts/ensemble_test_predict` as an example of a script used to run the full ensemble inference pipeline on the BEA-2019 test set.
+The command:
+```bash
+./bash_scripts/best_ensemble_predict.sh <input.txt> <output.txt>
+```
+Downloads and runs a pretrained ensemble model.
+
+We include `bash_scripts/ensemble_test_predict.sh` as an example of a script used to run the full ensemble inference pipeline on the BEA-2019 test set.
 Note that this script requires all model saves to include `inference_tweak_params.json` files.
 
 ## Run ERRANT evaluation
@@ -301,7 +307,7 @@ Note that `python2` should point to a Python 2.7 interpreter.
 
 ## Model saves
 
-Our model saves (which all include `inference_tweak_params.json` files) can be downloaded from (LINK REMOVED FOR BLIND REVIEW)
+Our model saves (which all include `inference_tweak_params.json` files) can be downloaded from https://huggingface.co/stuartmesham
 
 ## Our Training Pipeline
 
