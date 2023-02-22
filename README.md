@@ -1,5 +1,19 @@
 # An Extended Sequence Tagging Vocabulary for Grammatical Error Correction
 
+This is the code for our paper ([arXiv](https://arxiv.org/abs/2302.05913)):
+
+```bibtex
+@inproceedings{mesham-etal-2023-extended,
+    title = "An Extended Sequence Tagging Vocabulary for Grammatical Error Correction",
+    author = "Mesham, Stuart and Bryant, Christopher and Rei, Marek and Yuan, Zheng",
+    booktitle = "Findings of the 17th Conference of the European Chapter of the Association for Computational Linguistics",
+    month = may,
+    year = "2023",
+    address = "Dubrovnik, Croatia",
+    publisher = "Association for Computational Linguistics",
+}
+```
+
 Throughout our codebase we use the terms "spell" and "lemon".
 They refer to spelling and lemminflect-related things respectively.
 
