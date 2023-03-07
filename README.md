@@ -17,6 +17,10 @@ This is the code for our paper ([arXiv](https://arxiv.org/abs/2302.05913)):
 Throughout our codebase we use the terms "spell" and "lemon".
 They refer to spelling and lemminflect-related things respectively.
 
+## Colab Quick Start
+
+[Inference example Colab notebook](https://colab.research.google.com/drive/1kXJZkkqxWf8LQCAAEQGSJ0j5IQSttM2V)
+
 ## Quick Start
 
 For users only interested in running inference with our trained models. First download the following required files,
@@ -284,7 +288,7 @@ The `ensemble.py` script is documented [here](https://github.com/MaksTarnavskyi/
 
 The command:
 ```bash
-./bash_scripts/best_ensemble_predict.sh <input.txt> <output.txt>
+./bash_scripts/ensemble_predict.sh <input.txt> <output.txt>
 ```
 Downloads and runs a pretrained ensemble model.
 
