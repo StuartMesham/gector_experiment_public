@@ -327,6 +327,10 @@ Note that `python2` should point to a Python 2.7 interpreter.
 
 Our model saves (which all include `inference_tweak_params.json` files) can be downloaded from https://huggingface.co/stuartmesham
 
+The naming scheme, e.g. for `deberta-large_lemon-spell_5k_4_p3` is:
+
+`<encoder>_<tagset>_<vocab size>_<seed index>_<training phase>`
+
 ## Our Training Pipeline
 
 We have included some examples of scripts we used to train the models in our paper.
